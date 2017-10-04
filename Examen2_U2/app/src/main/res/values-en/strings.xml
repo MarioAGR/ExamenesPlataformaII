@@ -5,8 +5,11 @@
     <string name="entrar">Enter</string>
     <string name="llamar">Call</string>
     <string name="mostrar">Show</string>
-    <string name="nombre">Name</string>
-    <string name="volver">Back</string>
-    <string name="numero">Number</string>
-    <string name="pagina">Web page</string>
+    <string name="nombre">Enter your name</string>
+    <string name="volver">Go back</string>
+    <string name="numero">Enter your number</string>
+    <string name="pagina">Enter your web page</string>
+    <string name="faltNom">Name is missing</string>
+    <string name="faltNum">Number is missing</string>
+    <string name="faltPag">Web page is missing</string>
 </resources>

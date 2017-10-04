@@ -20,8 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NotificationManager manager;
     NotificationCompat.Builder notificacion1;
 
-    int contador = 0;
-    String faltaNombre, faltaNumero, faltaPagina;
+    String faltaNombre = "", faltaNumero = "", faltaPagina = "";
     boolean faltaron = false;
 
     @Override
@@ -36,28 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    public void mostrarNotificacion() {
-        notificacion1 = new NotificationCompat.Builder(getApplicationContext());
-        notificacion1.setContentTitle(String.valueOf(R.string.app_name));
-        notificacion1.setSmallIcon(R.mipmap.ic_launcher_round);
-        notificacion1.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-//        Intent mismaActivity = new Intent(MainActivity.this, MainActivity.class);
-//        PendingIntent intentPendiente = PendingIntent.getActivity(getApplicationContext(), 1, mismaActivity, PendingIntent.FLAG_ONE_SHOT);
-
-        //BigTextStyle
-        NotificationCompat.BigTextStyle estilo = new NotificationCompat.BigTextStyle(notificacion1);
-        estilo.setBigContentTitle(String.valueOf(R.string.app_name));
-        estilo.bigText(faltaNombre+"\n"+faltaNumero+"\n"+faltaPagina);
-        //notificacion1.setContentIntent(intent);
-
-        manager.notify(contador++, estilo.build());
-    }
-
     @Override
     public void onClick(View view) {
         verificarCampos();
-        if(faltaron){
+        if (faltaron) {
             mostrarNotificacion();
             faltaNombre = "";
             faltaNumero = "";
@@ -67,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent sigAct = new Intent(MainActivity.this, Segunda.class);
             String nombre = edtTxtNombre.getText().toString(),
                     pagina = edtTxtPagina.getText().toString();
-            int numero = Integer.parseInt(edtTxtNumero.getText().toString());
+            long numero = Long.parseLong(edtTxtNumero.getText().toString());
             sigAct.putExtra("nombreExtra", nombre);
             sigAct.putExtra("numeroExtra", numero);
             sigAct.putExtra("paginaExtra", pagina);
@@ -76,18 +57,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean verificarCampos() {
-        if(TextUtils.isEmpty(edtTxtNombre.getText().toString())){
-            faltaNombre = "Falto nombre";
+        if (TextUtils.isEmpty(edtTxtNombre.getText().toString())) {
+            faltaNombre = getResources().getString(R.string.faltNom);
             faltaron = true;
         }
-        if(TextUtils.isEmpty(edtTxtNumero.getText().toString())){
-            faltaNombre = "Falto numero";
+        if (TextUtils.isEmpty(edtTxtNumero.getText().toString())) {
+            faltaNumero = getResources().getString(R.string.faltNum);
             faltaron = true;
         }
-        if(TextUtils.isEmpty(edtTxtPagina.getText().toString())) {
-            faltaNombre = "Falto pagina";
+        if (TextUtils.isEmpty(edtTxtPagina.getText().toString())) {
+            faltaPagina = getResources().getString(R.string.faltPag);
             faltaron = true;
         }
         return faltaron;
+    }
+
+    public void mostrarNotificacion() {
+        notificacion1 = new NotificationCompat.Builder(getApplicationContext());
+        notificacion1.setContentTitle(getResources().getString(R.string.app_name));
+        notificacion1.setSmallIcon(R.mipmap.ic_launcher_round);
+        notificacion1.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        //BigTextStyle
+        NotificationCompat.BigTextStyle estilo = new NotificationCompat.BigTextStyle(notificacion1);
+        estilo.setBigContentTitle(getResources().getString(R.string.app_name));
+        estilo.bigText(faltaNombre + "\n" + faltaNumero + "\n" + faltaPagina);
+        //notificacionVolver.setContentIntent(intent);
+
+        manager.notify(1, estilo.build());
     }
 }

@@ -8,4 +8,7 @@
     <string name="llamar">Llamar</string>
     <string name="volver">Volver</string>
     <string name="cancelar">Cancelar</string>
+    <string name="faltNom">Faltó el nombre</string>
+    <string name="faltNum">Faltó el número</string>
+    <string name="faltPag">Faltó la página</string>
 </resources>
