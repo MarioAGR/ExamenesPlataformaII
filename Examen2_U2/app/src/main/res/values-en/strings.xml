@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Examen2_U2_13550389</string>
+    <string name="cancelar">Cancel</string>
+    <string name="entrar">Enter</string>
+    <string name="llamar">Call</string>
+    <string name="mostrar">Show</string>
+    <string name="nombre">Name</string>
+    <string name="volver">Back</string>
+    <string name="numero">Number</string>
+    <string name="pagina">Web page</string>
+</resources>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name" translatable="false">Examen2_U2_13550389</string>
+    <string name="nombre">Ingresa tu nombre</string>
+    <string name="numero">Ingresa tu numero de telefono</string>
+    <string name="pagina">Ingresa pagina web</string>
+    <string name="entrar">Entrar</string>
+    <string name="mostrar">Mostrar</string>
+    <string name="llamar">Llamar</string>
+    <string name="volver">Volver</string>
+    <string name="cancelar">Cancelar</string>
+</resources>
