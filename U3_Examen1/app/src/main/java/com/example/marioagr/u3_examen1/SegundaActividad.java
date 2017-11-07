@@ -21,6 +21,7 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 
 	Button btnCalcular;
 	ListView lstVw;
+	Almacenador almacenSegunda = MainActivity.almacen;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 
 //		Enviar a la otra actividad
 		Intent sigActMod = new Intent(this, ModificarDatos.class);
+		sigActMod.putExtra("index", i);
 		startActivity(sigActMod);
 
 	}
@@ -47,7 +49,7 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 	@Override
 	public void onClick(View view) {
 
-		ArrayList<Dato> elementos = MainActivity.almacen.getElementos();
+		ArrayList<Dato> elementos = almacenSegunda.getElementos();
 
 //		Log.e("Tamaño de elementos", "" + elementos.size());
 
@@ -55,19 +57,20 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 		Dato d2 = elementos.get(elementos.size() - 3);
 		Dato d3 = elementos.get(elementos.size() - 5);
 
-		Log.e("d1.d1", ""+d1.dato1);
-		Log.e("d1.d2", ""+d1.dato1);
-		Log.e("d2.d1", ""+d1.dato1);
-		Log.e("d2.d2", ""+d1.dato1);
-		Log.e("d3.d1", ""+d1.dato1);
-		Log.e("d3.d2", ""+d1.dato1);
+		Log.e("d1.d1", "" + d1.dato1);
+		Log.e("d1.d2", "" + d1.dato1);
+		Log.e("d2.d1", "" + d1.dato1);
+		Log.e("d2.d2", "" + d1.dato1);
+		Log.e("d3.d1", "" + d1.dato1);
+		Log.e("d3.d2", "" + d1.dato1);
 
 		double res = (((d1.dato1 * d2.dato2) / (d3.dato1 + d3.dato2 - d1.dato2)) * d2.dato1);
 
 		Toast.makeText(this, "" + res, Toast.LENGTH_SHORT).show();
 	}
 
-//	public boolean hasExternalStorage() {
+//	Al final ni se usó
+// public boolean hasExternalStorage() {
 //		String status = Environment.getExternalStorageState();
 //		if (status.equals(Environment.MEDIA_MOUNTED)) {
 //			return true;
@@ -80,7 +83,7 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 //			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Objetos.obj");
 //			if (hasExternalStorage() && file.exists()) {
 //				ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
-//				MainActivity.almacen.elementos = (ArrayList<Dato>) stream.readObject();
+//				almacenSegunda.elementos = (ArrayList<Dato>) stream.readObject();
 //				stream.close();
 //				Log.e("Se leyó", "si");
 //			}
@@ -89,13 +92,20 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 //	}
 
 	public void actualizarLista() {
-		Almacenador alcamen = new Almacenador();
+//		TODO no actualiza lista
 		ArrayList<String> datos = new ArrayList<>();
-		for (Dato d : alcamen.getElementos()) {
-			datos.add("Dato 1: " + d.getDato1() + " | Dato 2: " + d.getDato2());
+		for (Dato d : almacenSegunda.getElementos()) {
+			datos.add("Dato 1: " + d.getDato1() + " - Dato 2: " + d.getDato2());
 		}
 		ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, datos);
 		lstVw.setAdapter(adapter);
 		Log.e("Se actualizó", "la lista");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MainActivity.cargarArchivo();
+		actualizarLista();
 	}
 }
