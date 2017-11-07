@@ -92,7 +92,6 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 //	}
 
 	public void actualizarLista() {
-//		TODO no actualiza lista
 		ArrayList<String> datos = new ArrayList<>();
 		for (Dato d : almacenSegunda.getElementos()) {
 			datos.add("Dato 1: " + d.getDato1() + " - Dato 2: " + d.getDato2());

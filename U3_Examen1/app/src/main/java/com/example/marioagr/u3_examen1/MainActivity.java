@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //		Cosas a esperar que funcionen
 		almacen = new Almacenador();
 		Log.e("memoriaExterna", hasExternalStorage()+"");
-		cargarArchivo();
+		if (hasExternalStorage()) {
+			cargarArchivo();
+		} else {
+			btnSigAct.setEnabled(false);
+			btnAgregarDatos.setEnabled(false);
+		}
 		Log.e("Tamaño de elementos", almacen.getElementos().size()+"");
 		Log.e("getValor", ""+almacen.getElementos());
 	}
@@ -51,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	public void onClick(View view) {
 		if (view.getId() == R.id.btnAgregarDatos) {
 
-			if (hasExternalStorage()) {
 				int datoEscrito1 = Integer.parseInt(edtTxtDato1.getText().toString());
 				int datoEscrito2 = Integer.parseInt(edtTxtDato2.getText().toString());
 				Dato datos = new Dato();
@@ -61,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				almacen.setElementos(almacen.elementos);
 				Log.e("Guardar", "estamos por ver");
 				guardarArchivo();
-			}
 
 		} else if (view.getId() == R.id.btnSigAct) {
 			Intent sigAct2 = new Intent(this, SegundaActividad.class);
@@ -102,5 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				Log.e("Se leyó", "se supone");
 			}
 		} catch (Exception e) {}
+	}
+
+	static public void verificarRepetido() {
+		//TODO metodo
 	}
 }

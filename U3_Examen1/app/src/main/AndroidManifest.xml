@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.marioagr.u3_examen1">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SegundaActividad" />
-        <activity android:name=".ModificarDatos"></activity>
+        <activity
+            android:name=".SegundaActividad"
+            android:label="Lista de valores" />
+        <activity
+            android:name=".ModificarDatos"
+            android:label="Modificar dato"></activity>
     </application>
 
 </manifest>

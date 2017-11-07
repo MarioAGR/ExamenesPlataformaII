@@ -15,6 +15,7 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 	Button btnGuardar, btnBorrar;
 	int index = 0;
 	Almacenador almacenModificar = MainActivity.almacen;
+	ArrayList<Dato> alDatos = almacenModificar.getElementos();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +44,16 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 			datos.setDato1(Double.parseDouble(edtTxtDato1Mod.getText().toString()));
 			datos.setDato2(Double.parseDouble(edtTxtDato2Mod.getText().toString()));
 			almacenModificar.getElementos();
-			ArrayList<Dato> alDatos = almacenModificar.getElementos();
 			alDatos.set(index, datos);
 			almacenModificar.setElementos(alDatos);
 			MainActivity.guardarArchivo();
+			finish();
 
 		} else if (view.getId() == R.id.btnBorrar) {
-			Toast.makeText(this, "Borrar", Toast.LENGTH_SHORT).show();
+			almacenModificar.elementos.remove(index);
+			MainActivity.guardarArchivo();
+			Toast.makeText(this, "Borrado", Toast.LENGTH_SHORT).show();
+			finish();
 		}
 	}
 }
