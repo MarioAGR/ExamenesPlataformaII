@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 	EditText edtTxtDato1, edtTxtDato2;
 	Button btnAgregarDatos, btnSigAct;
-	Almacenador almacen;
+	static Almacenador almacen;
 
 	int i = 0;
 
@@ -39,9 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //		Eventos
 		btnAgregarDatos.setOnClickListener(this);
 		btnSigAct.setOnClickListener(this);
-
+//		Cosas a esperar que funcionen
 		almacen = new Almacenador();
-		Log.e("memExt", hasExternalStorage()+"");
+		Log.e("memoriaExterna", hasExternalStorage()+"");
+		cargarArchivo();
+		Log.e("Tamaño de elementos", almacen.getElementos().size()+"");
+		Log.e("getValor", ""+almacen.getElementos());
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				datos.setDato2(datoEscrito2);
 				almacen.elementos.add(i++, datos);
 				almacen.setElementos(almacen.elementos);
+				Log.e("Guardar", "estamos por ver");
 				guardarArchivo();
 			}
 
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		}
 	}
 
-	public boolean hasExternalStorage() {
+	static public boolean hasExternalStorage() {
 		String status = Environment.getExternalStorageState();
 		if (status.equals(Environment.MEDIA_MOUNTED)) {
 			return true;
@@ -73,28 +77,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		return false;
 	}
 
-	public void guardarArchivo() {
+	static public void guardarArchivo() {
 		try {
 			if (hasExternalStorage()) {
-				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS), "Objetos.obj");
+				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Objetos.obj");
 				ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file, false));
 				stream.writeObject(almacen.elementos);
 				stream.close();
+				Log.e("Guardar", "según esto se guardó");
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
-	public void cargarArchivo() {
+	static public void cargarArchivo() {
 		try {
-			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS), "Objetos.obj");
+			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Objetos.obj");
 			if (hasExternalStorage() && file.exists()) {
 				ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
 				almacen.elementos = (ArrayList<Dato>) stream.readObject();
 				stream.close();
+				Log.e("Se leyó", "se supone");
 			}
 		} catch (Exception e) {}
 	}

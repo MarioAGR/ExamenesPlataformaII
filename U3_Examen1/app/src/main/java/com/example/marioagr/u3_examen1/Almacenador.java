@@ -8,7 +8,9 @@ import java.util.ArrayList;
  */
 
 public class Almacenador implements Serializable {
+
 	ArrayList<Dato> elementos = new ArrayList<>();
+
 	double valor;
 
 	public ArrayList<Dato> getElementos() {
