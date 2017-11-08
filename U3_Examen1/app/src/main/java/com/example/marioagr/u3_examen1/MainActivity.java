@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	Button btnAgregarDatos, btnSigAct;
 	static Almacenador almacen;
 
-	int i = 0;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,34 +40,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		btnSigAct.setOnClickListener(this);
 //		Cosas a esperar que funcionen
 		almacen = new Almacenador();
-		Log.e("memoriaExterna", hasExternalStorage()+"");
+		Log.e("memoriaExterna", hasExternalStorage() + "");
 		if (hasExternalStorage()) {
 			cargarArchivo();
 		} else {
 			btnSigAct.setEnabled(false);
 			btnAgregarDatos.setEnabled(false);
 		}
-		Log.e("Tamaño de elementos", almacen.getElementos().size()+"");
-		Log.e("getValor", ""+almacen.getElementos());
+		Log.e("Tamaño de elementos", almacen.getElementos().size() + "");
+		Log.e("getValor", "" + almacen.getElementos());
 	}
 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.btnAgregarDatos) {
-
-				int datoEscrito1 = Integer.parseInt(edtTxtDato1.getText().toString());
-				int datoEscrito2 = Integer.parseInt(edtTxtDato2.getText().toString());
-				Dato datos = new Dato();
-				datos.setDato1(datoEscrito1);
-				datos.setDato2(datoEscrito2);
-				almacen.elementos.add(i++, datos);
-				almacen.setElementos(almacen.elementos);
-				Log.e("Guardar", "estamos por ver");
+//			Verificar si es repetido
+			if (verificarRepetido()) {
+				Toast.makeText(this, "Datos repetidos como el anterior, favor de cambiarlos", Toast.LENGTH_LONG).show();
+			} else {
 				guardarArchivo();
-
+			}
 		} else if (view.getId() == R.id.btnSigAct) {
-			Intent sigAct2 = new Intent(this, SegundaActividad.class);
-			startActivity(sigAct2);
+//			Si son 5 o menos datos, que ingrese uno más
+			if (!(almacen.elementos.size() <= 5)) {
+				Intent sigAct2 = new Intent(this, SegundaActividad.class);
+				startActivity(sigAct2);
+			} else {
+				Toast.makeText(this, "Ingresa más datos por favor", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	public boolean verificarRepetido() {
+		int i = almacen.elementos.size();
+		double datoEscrito1 = Integer.parseInt(edtTxtDato1.getText().toString());
+		double datoEscrito2 = Integer.parseInt(edtTxtDato2.getText().toString());
+		Dato datos = new Dato();
+		datos.setDato1(datoEscrito1);
+		datos.setDato2(datoEscrito2);
+		if (almacen.elementos.size() == 0) {
+			return false;
+		} else {
+			Dato datosAV;
+			datosAV = almacen.elementos.get(almacen.elementos.size() - 1);
+			boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2);
+			Log.e("comparar", "" + comparar);
+
+			almacen.elementos.add(i++, datos);
+			almacen.setElementos(almacen.elementos);
+			Log.e("Valor dei", "" + i);
+			Log.e("Guardar", "estamos por ver");
+			return comparar;
 		}
 	}
 
@@ -92,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	static public void cargarArchivo() {
@@ -104,10 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				stream.close();
 				Log.e("Se leyó", "se supone");
 			}
-		} catch (Exception e) {}
-	}
-
-	static public void verificarRepetido() {
-		//TODO metodo
+		} catch (Exception e) {
+		}
 	}
 }

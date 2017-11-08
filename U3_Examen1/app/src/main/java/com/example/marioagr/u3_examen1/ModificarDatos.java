@@ -2,6 +2,7 @@ package com.example.marioagr.u3_examen1;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,29 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 			MainActivity.guardarArchivo();
 			Toast.makeText(this, "Borrado", Toast.LENGTH_SHORT).show();
 			finish();
+		}
+	}
+
+	public boolean verificarRepetido() {
+		int i = almacenModificar.elementos.size();
+		double datoEscrito1 = Integer.parseInt(edtTxtDato1Mod.getText().toString());
+		double datoEscrito2 = Integer.parseInt(edtTxtDato2Mod.getText().toString());
+		Dato datos = new Dato();
+		datos.setDato1(datoEscrito1);
+		datos.setDato2(datoEscrito2);
+		if (almacenModificar.elementos.size() == 0) {
+			return false;
+		} else {
+			Dato datosAV;
+			datosAV = almacenModificar.elementos.get(index - 1);
+			boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2);
+			Log.e("comparar", "" + comparar);
+
+			almacenModificar.elementos.add(i++, datos);
+			almacenModificar.setElementos(almacenModificar.elementos);
+			Log.e("Valor dei", "" + i);
+			Log.e("Guardar", "estamos por ver");
+			return comparar;
 		}
 	}
 }

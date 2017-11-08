@@ -94,7 +94,7 @@ public class SegundaActividad extends AppCompatActivity implements AdapterView.O
 	public void actualizarLista() {
 		ArrayList<String> datos = new ArrayList<>();
 		for (Dato d : almacenSegunda.getElementos()) {
-			datos.add("Dato 1: " + d.getDato1() + " - Dato 2: " + d.getDato2());
+			datos.add("D1: " + d.getDato1() + " - D2: " + d.getDato2());
 		}
 		ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, datos);
 		lstVw.setAdapter(adapter);
