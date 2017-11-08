@@ -59,10 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				Toast.makeText(this, "Datos repetidos como el anterior, favor de cambiarlos", Toast.LENGTH_LONG).show();
 			} else {
 				guardarArchivo();
+				Toast.makeText(this, "Datos agregados", Toast.LENGTH_SHORT).show();
 			}
 		} else if (view.getId() == R.id.btnSigAct) {
 //			Si son 5 o menos datos, que ingrese uno más
-			if (!(almacen.elementos.size() <= 5)) {
+			if (!(almacen.elementos.size() <= 4)) {
 				Intent sigAct2 = new Intent(this, SegundaActividad.class);
 				startActivity(sigAct2);
 			} else {

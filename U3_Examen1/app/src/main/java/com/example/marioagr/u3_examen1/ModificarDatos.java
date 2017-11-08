@@ -39,47 +39,77 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.btnGuardar) {
-
 			if (verificarRepetido()) {
-				Toast.makeText(this, "Esta repetido arriba/abajo", Toast.LENGTH_SHORT).show();
 			} else {
-
 				MainActivity.guardarArchivo();
+				Toast.makeText(this, "Guardado", Toast.LENGTH_SHORT).show();
 				finish();
 			}
-
 		} else if (view.getId() == R.id.btnBorrar) {
-			almacenModificar.elementos.remove(index);
-			MainActivity.guardarArchivo();
-			Toast.makeText(this, "Borrado", Toast.LENGTH_SHORT).show();
-			finish();
+			if (almacenModificar.elementos.size() <= 5) {
+				Toast.makeText(this, "No puedes tener menos de 5 elementos", Toast.LENGTH_SHORT).show();
+			} else {
+				almacenModificar.elementos.remove(index);
+				MainActivity.guardarArchivo();
+				Toast.makeText(this, "Borrado", Toast.LENGTH_SHORT).show();
+				finish();
+			}
 		}
 	}
 
 	public boolean verificarRepetido() {
-		Toast.makeText(this, "Guardado", Toast.LENGTH_SHORT).show();
+
 		Dato datos = new Dato();
 		datos.setDato1(Double.parseDouble(edtTxtDato1Mod.getText().toString()));
 		datos.setDato2(Double.parseDouble(edtTxtDato2Mod.getText().toString()));
+		Dato datosAV, datosAV2;
 
-//
 		int i = almacenModificar.elementos.size();
-		if (almacenModificar.elementos.size() == 0) {
+
+		if (i == 0) {
 			return false;
 		} else {
-			Dato datosAV, datosAV2;
-			datosAV = almacenModificar.elementos.get(index - 1);
-			datosAV2 = almacenModificar.elementos.get(index + 1);
-			boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2),
-					comparar2 = (datos.dato1 == datosAV2.dato1 && datos.dato2 == datosAV2.dato2);
-			Log.e("comparar", "" + comparar);
+			if (index == 0) {
 
-			almacenModificar.getElementos();
-			alDatos.set(index, datos);
-			almacenModificar.setElementos(alDatos);
-			Log.e("Valor dei", "" + i);
-			Log.e("Guardar", "estamos por ver");
-			return comparar;
+				datosAV = almacenModificar.elementos.get(1);
+				boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2);
+				if (comparar) {
+					Toast.makeText(this, "Es igual al siguiente valor de la lista", Toast.LENGTH_LONG).show();
+				}
+				return comparar;
+
+			} else if (index == i-1) {
+
+				datosAV = almacenModificar.elementos.get(i - 2);
+				boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2);
+				if (comparar) {
+					Toast.makeText(this, "Es igual al anterior valor de la lista", Toast.LENGTH_SHORT).show();
+				}
+				return comparar;
+
+			} else {
+
+				datosAV = almacenModificar.elementos.get(index - 1);
+				datosAV2 = almacenModificar.elementos.get(index + 1);
+				boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2),
+						comparar2 = (datos.dato1 == datosAV2.dato1 && datos.dato2 == datosAV2.dato2),
+						comparacionFinal = (!comparar && !comparar2) ? false : true;
+				Log.e("comparar", "" + comparar);
+				Log.e("comparar2", "" + comparar2);
+				Log.e("comparacionFinal", "" + comparacionFinal);
+
+				almacenModificar.getElementos();
+				alDatos.set(index, datos);
+				almacenModificar.setElementos(alDatos);
+//				Log.e("datosAV.dato1", ""+datosAV.dato1);
+//				Log.e("datosAV.dato2", ""+datosAV.dato2);
+//				Log.e("datosAV2.dato1", ""+datosAV2.dato1);
+//				Log.e("datosAV2.dato2", ""+datosAV2.dato2);
+				if (comparacionFinal) {
+					Toast.makeText(this, "Es igual al anterior/siguiente valor de la lista", Toast.LENGTH_LONG).show();
+				}
+				return comparacionFinal;
+			}
 		}
 	}
 }
