@@ -40,15 +40,13 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 	public void onClick(View view) {
 		if (view.getId() == R.id.btnGuardar) {
 
-			Toast.makeText(this, "Guardado", Toast.LENGTH_SHORT).show();
-			Dato datos = new Dato();
-			datos.setDato1(Double.parseDouble(edtTxtDato1Mod.getText().toString()));
-			datos.setDato2(Double.parseDouble(edtTxtDato2Mod.getText().toString()));
-			almacenModificar.getElementos();
-			alDatos.set(index, datos);
-			almacenModificar.setElementos(alDatos);
-			MainActivity.guardarArchivo();
-			finish();
+			if (verificarRepetido()) {
+				Toast.makeText(this, "Esta repetido arriba/abajo", Toast.LENGTH_SHORT).show();
+			} else {
+
+				MainActivity.guardarArchivo();
+				finish();
+			}
 
 		} else if (view.getId() == R.id.btnBorrar) {
 			almacenModificar.elementos.remove(index);
@@ -59,22 +57,26 @@ public class ModificarDatos extends AppCompatActivity implements View.OnClickLis
 	}
 
 	public boolean verificarRepetido() {
-		int i = almacenModificar.elementos.size();
-		double datoEscrito1 = Integer.parseInt(edtTxtDato1Mod.getText().toString());
-		double datoEscrito2 = Integer.parseInt(edtTxtDato2Mod.getText().toString());
+		Toast.makeText(this, "Guardado", Toast.LENGTH_SHORT).show();
 		Dato datos = new Dato();
-		datos.setDato1(datoEscrito1);
-		datos.setDato2(datoEscrito2);
+		datos.setDato1(Double.parseDouble(edtTxtDato1Mod.getText().toString()));
+		datos.setDato2(Double.parseDouble(edtTxtDato2Mod.getText().toString()));
+
+//
+		int i = almacenModificar.elementos.size();
 		if (almacenModificar.elementos.size() == 0) {
 			return false;
 		} else {
-			Dato datosAV;
+			Dato datosAV, datosAV2;
 			datosAV = almacenModificar.elementos.get(index - 1);
-			boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2);
+			datosAV2 = almacenModificar.elementos.get(index + 1);
+			boolean comparar = (datos.dato1 == datosAV.dato1 && datos.dato2 == datosAV.dato2),
+					comparar2 = (datos.dato1 == datosAV2.dato1 && datos.dato2 == datosAV2.dato2);
 			Log.e("comparar", "" + comparar);
 
-			almacenModificar.elementos.add(i++, datos);
-			almacenModificar.setElementos(almacenModificar.elementos);
+			almacenModificar.getElementos();
+			alDatos.set(index, datos);
+			almacenModificar.setElementos(alDatos);
 			Log.e("Valor dei", "" + i);
 			Log.e("Guardar", "estamos por ver");
 			return comparar;
