@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,10 +26,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 	Button btn;
 	double latitud = 0, longitud = 0;
-	int numMarcador = 1;
+	int numMarcador = 0;
 	boolean botonBool = false;
 
-	Thread hilo;
+	TareaAsync tar;
+
 
 //	carbon-clover-188201
 
@@ -50,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 		if (locacion != null) {
 			onLocationChanged(locacion);
 		}
+		btn.setText("Detenido");
 	}
 
 
@@ -65,12 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
-
-		// Add a marker in Sydney and move the camera
-		LatLng sydney = new LatLng(-34, 151);
-		mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-		mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//		cont = new Contador();
 	}
 
 	@Override
@@ -95,21 +92,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 	}
 
 	public void enClick(View v) {
-		agregarMarcador();
 		botonBool = !botonBool;
 		if (botonBool) {
 			btn.setText("Detener");
+			tar = new TareaAsync();
+			tar.execute();
 		} else {
 			btn.setText("Detenido");
+			tar.cancel(true);
 		}
 	}
 
 	public void agregarMarcador() {
 		numMarcador++;
 		LatLng marcador = new LatLng(latitud, longitud);
-		mMap.addMarker(new MarkerOptions().position(marcador).title("Marcador #" + numMarcador));
+		mMap.addMarker(new MarkerOptions().position(marcador).title("Punto " + numMarcador));
+		mMap.animateCamera(CameraUpdateFactory.newLatLng(marcador));
 	}
 
-	//	Agregar un AsyncTask o algo para manejar con tiempo y de ahi darle a los 20 segundos
+	class TareaAsync extends AsyncTask<Integer, Integer, Void> {
+		public TareaAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+		}
+
+		@Override
+		protected Void doInBackground(Integer... integers) {
+			while (botonBool) {
+				try {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							agregarMarcador();
+						}
+					});
+					Log.e("cont/hilo", "Corrienndo");
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+	}
 
 }
